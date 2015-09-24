@@ -1,0 +1,4 @@
+/nbproject/private/
+.idea/
+application/config/config.development.php
+sync.ffs_db
