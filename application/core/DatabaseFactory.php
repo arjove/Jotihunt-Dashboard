@@ -23,6 +23,7 @@ class DatabaseFactory
 {
 	private static $factory;
 	private $database;
+	private $fluent;
 
 	public static function getFactory()
 	{
@@ -42,5 +43,13 @@ class DatabaseFactory
 			);
 		}
 		return $this->database;
+	}
+
+	public function fluent() {
+		if(!$this->fluent) {
+			$pdo = $this->getConnection();
+			$this->fluent = new FluentPDO($pdo);
+		}
+		return $this->fluent;
 	}
 }
