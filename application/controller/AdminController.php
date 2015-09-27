@@ -32,4 +32,12 @@ class AdminController extends Controller
 
 		Redirect::to("admin");
 	}
+
+    public function actionSetInterVal()
+    {
+        GameModel::setInterVal(Request::post('renewal'));
+
+        Redirect::to("admin");
+    }
+
 }
