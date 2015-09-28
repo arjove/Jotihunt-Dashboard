@@ -138,4 +138,17 @@ class Session
     {
         return (self::get('user_logged_in') ? true : false);
     }
+
+
+    /**
+     * Trows error in session cookie.
+     *
+     * Can be used to trow a error on a page wherever needed.
+     *
+     * @param $message
+     */
+    public static function error($message) {
+        self::add('feedback_negative', $message);
+    }
+    
 }
