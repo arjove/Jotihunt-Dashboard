@@ -150,5 +150,5 @@ class Session
     public static function error($message) {
         self::add('feedback_negative', $message);
     }
-    
+
 }
