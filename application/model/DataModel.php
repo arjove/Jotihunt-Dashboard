@@ -12,10 +12,10 @@ class DataModel
         $db = DatabaseFactory::getFactory()->fluentPDO();
         $query = $db->insertInto('item', $values);
         if($query->execute()) {
-            LogModel::log('success', 'A item was added', $name, Session::get('user_id'));
+            Log::log('success', 'A item was added', $name, Session::get('user_id'));
             return true;
         } else {
-            LogModel::log('error', 'Failed to add a item', $name, Session::get('user_id'));
+            Log::log('error', 'Failed to add a item', $name, Session::get('user_id'));
             return false;
         }
 
