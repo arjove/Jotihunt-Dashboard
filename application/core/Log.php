@@ -50,6 +50,7 @@ class Log {
     }
 
     /**
+     * @param $typeOf
      * @param $type
      * @param $title
      * @param $text
@@ -57,11 +58,12 @@ class Log {
      * @param null $param
      * @return bool
      */
-    public function log($type, $title, $text, $user_id = null, $param = null) {
+    public static function log($typeOf, $type, $title, $text, $user_id = null, $param = null) {
         $db = DatabaseFactory::getFactory()->fluent();
 
         $values = array(
             'ENTRY_ID' => time(),
+            'typeOf' => $typeOf,
             'type' => $type,
             'title' => $title,
             'text' => $text,

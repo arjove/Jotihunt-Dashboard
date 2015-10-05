@@ -223,7 +223,7 @@
                         </div>
                     </li>
                     <li class="p-r-15 inline">
-                        <a href="#link to somewhere" class="icon-set clip "></a>
+                        <a href="http://jotihunt.net" class="icon-set clip "></a>
                     </li>
                     <li class="p-r-15 inline">
                         <a href="<?php echo Config::get('URL'); ?>" class="icon-set grid-box"></a>
