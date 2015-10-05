@@ -6,7 +6,7 @@
 class ScoreModel
 {
     private static $api_version = "1.0";
-    private static $base_link = "http:://jotihunt.net/api";
+    private static $base_link = "http:://jotihunt.net/rest";
     private static $allowed_types = array("total" => "scorelijst", "specific" => "scorelijst_punten");
     private static $file_type = "json";
 

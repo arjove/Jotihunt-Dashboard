@@ -44,7 +44,7 @@ class Log {
      * @param int $user_id id of the specific user
      * @return object a single object (the result)
      */
-    public static function getActivity($user_id) {
+    public function getActivity($user_id) {
        //
         return false;
     }
@@ -57,7 +57,7 @@ class Log {
      * @param null $param
      * @return bool
      */
-    public static function log($type, $title, $text, $user_id = null, $param = null) {
+    public function log($type, $title, $text, $user_id = null, $param = null) {
         $db = DatabaseFactory::getFactory()->fluent();
 
         $values = array(

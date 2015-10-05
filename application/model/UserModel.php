@@ -340,4 +340,57 @@ class UserModel
         // return one row (we only have one result or nothing)
         return $query->fetch();
     }
+
+    /**
+     * get username via id
+     * @param $user_id
+     * @return string username
+     */
+    public static function getUsernameById($user_id) {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->from('users')->select('user_name')->where('user_id', $user_id);
+        $result = $query->execute()->fetch();
+        $data = json_decode(json_encode($result), true);
+        return $data['user_name'];
+    }
+
+
+    /**
+     * get all users by id and name
+     *
+     * returns all users with a id and their name
+     * @return array
+     */
+    public static function getAllUsersByIdAndName() {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->from('users')->select(array('user_id', 'user_name'));
+        $result = $query->execute()->fetchAll();
+        $data = json_decode(json_encode($result), true);
+        return $data;
+    }
+
+    /**
+     * return last login timestamp
+     * used for notifications.
+     * @return int timestamp (unix format)
+     */
+    public static function getUserLastLoginTimestamp() {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->from('users')->select('user_last_login_timestamp')->where('user_id', Session::get('user_id'));
+        $result = $query->execute()->fetch();
+        $data = json_decode(json_encode($result), true);
+        return $data['user_last_login_timestamp'];
+    }
+
+    /**
+     * Set timestamp to get rid of the left over notify's
+     * @return bool
+     */
+    public static function setNotifyTimestamp() {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $set = array('user_last_login_timestamp' => time());
+        $query = $db->update('users')->set($set)->where('user_id', Session::get('user_id'));
+        $query->execute();
+        return true;
+    }
 }
