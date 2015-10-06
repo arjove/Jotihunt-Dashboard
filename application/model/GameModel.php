@@ -48,34 +48,10 @@ class GameModel
      * @param $type
      * @return bool
      */
-    public static function updateDatabase($type, $id){
-        $db = DatabaseFactory::getFactory()->fluent();
-        if ($type = 'opdracht') {
-            $data = self::buildLink($type);
-            foreach ($data['data'] as $key => $value) {
-                $values = array(
-                    'UUID' => $value['ID'],
-                    'title' => $value['titel'],
-                    'start' => $value['datum'],
-                    'end' => $value['eindtijd'],
-                    'max_points' => $value['maxpunten'],
-                    'finished' => false,
-                    );
-                if ()
-                $query = $db->update('opdrachten')->set($values);
-                if ($query->execute()){
-                    Log::log('success', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $set);
-                } else {
-                    Log::log('error', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $set);
-                }
-            }
+    public static function updateDatabase($type){
+        // pulls the type
 
-        } elseif ($type = 'hint') {
-
-        } elseif ($type = 'nieuws') {
-
-        }
-
+        // just do nothing for now.
         return false;
     }
 
