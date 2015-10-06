@@ -113,8 +113,13 @@ class GameModel
                     unset($sql);
 
                 }
-
+                self::setLastUpdated($type, $data['last_update']);
             } elseif ($type = 'hint') {
+                // temp, it doesnt know how to handle with a hitn yet. no api samples have been realeased.
+                Redirect::home();
+
+
+                //
                 $data = self::buildLink($type);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
@@ -152,7 +157,7 @@ class GameModel
                     unset($sql);
 
                 }
-
+                self::setLastUpdated($type, $data['last_update']);
             } elseif ($type = 'nieuws') {
                 $data = self::buildLink($type);
                 foreach ($data['data'] as $key => $value) {
@@ -188,9 +193,8 @@ class GameModel
                     unset($sql);
 
                 }
-
+                self::setLastUpdated($type, $data['last_update']);
             }
-            self::setLastUpdated($type, $data['last_update']);
         }
         return false;
     }
@@ -199,9 +203,10 @@ class GameModel
      * @param $id
      * @return bool
      */
-    public static function toggleFinished($id) {
-        // get current state, invert and put beck in database.
-        return false;
+    public static function markFinished($id) {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->update('opdrachten')->set('finished', 1)->where('id', $id);
+        // add checking too!
     }
 
     /**
@@ -212,7 +217,6 @@ class GameModel
      */
     public static function getData($type, $latest = false, $updated_since = null) {
 
-        // just do nothing for now.
         return false;
     }
 
