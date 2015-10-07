@@ -42,7 +42,7 @@ class Log {
     /**
      * Get Activity of a single user.
      * @param int $user_id id of the specific user
-     * @return boolean a single object (the result)
+     * @return object a single object (the result)
      */
     public function getActivity($user_id) {
        //
@@ -50,10 +50,10 @@ class Log {
     }
 
     /**
-     * @param string $typeOf
-     * @param string $type
-     * @param string $title
-     * @param string $text
+     * @param $typeOf
+     * @param $type
+     * @param $title
+     * @param $text
      * @param null $user_id
      * @param null $param
      * @return bool

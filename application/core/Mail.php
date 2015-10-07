@@ -99,12 +99,12 @@ class Mail
      * The main mail sending method, this simply calls a certain mail sending method depending on which mail provider
      * you've selected in the application's config.
      *
-     * @param string $user_email string email
+     * @param $user_email string email
      * @param $from_email string sender's email
      * @param $from_name string sender's name
      * @param $subject string subject
-     * @param string $body string full mail body text
-     * @return boolean|null the success status of the according mail sending method
+     * @param $body string full mail body text
+     * @return bool the success status of the according mail sending method
      */
 	public function sendMail($user_email, $from_email, $from_name, $subject, $body)
 	{
