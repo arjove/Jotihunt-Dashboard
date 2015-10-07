@@ -114,6 +114,7 @@ class GameModel
 
                 }
                 self::setLastUpdated($type, $data['last_update']);
+                unset($data);
             } elseif ($type = 'hint') {
                 // temp, it doesnt know how to handle with a hitn yet. no api samples have been realeased.
                 Redirect::home();
@@ -158,6 +159,7 @@ class GameModel
 
                 }
                 self::setLastUpdated($type, $data['last_update']);
+                unset($data);
             } elseif ($type = 'nieuws') {
                 $data = self::buildLink($type);
                 foreach ($data['data'] as $key => $value) {
@@ -194,6 +196,7 @@ class GameModel
 
                 }
                 self::setLastUpdated($type, $data['last_update']);
+                unset($data);
             }
         }
         return false;
@@ -206,7 +209,23 @@ class GameModel
     public static function markFinished($id) {
         $db = DatabaseFactory::getFactory()->fluent();
         $query = $db->update('opdrachten')->set('finished', 1)->where('id', $id);
-        // add checking too!
+        if ($query->execute()) {
+            Log::log('success', 'updateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+        } else {
+            Log::log('error', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+        }
+
+    }
+
+    public static function unMarkFinished($id) {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->update('opdrachten')->set('finished', 0)->where('id', $id);
+        if ($query->execute()) {
+            Log::log('success', 'updateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+        } else {
+            Log::log('error', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+        }
+
     }
 
     /**
