@@ -76,7 +76,7 @@ class GameModel
         $db = DatabaseFactory::getFactory()->fluent();
         if (!$type) {
             if ($type = 'opdracht') {
-                $data = self::buildLink($type);
+                $data = json_decode(self::buildLink($type), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
@@ -121,7 +121,7 @@ class GameModel
 
 
                 //
-                $data = self::buildLink($type);
+                $data = json_decode(self::buildLink($type), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
@@ -161,7 +161,7 @@ class GameModel
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
             } elseif ($type = 'nieuws') {
-                $data = self::buildLink($type);
+                $data = json_decode(self::buildLink($type), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
