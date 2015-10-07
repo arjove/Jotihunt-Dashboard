@@ -18,7 +18,7 @@ class Redirect
 	/**
 	 * To the defined page
 	 *
-	 * @param $path
+	 * @param string $path
 	 */
 	public static function to($path)
 	{

@@ -19,7 +19,7 @@ class GameModel
     private static $allowed_types = array("hint" => "hint", "quest" => "opdracht", "news" => "nieuws");
 
     /**
-     * @param $type
+     * @param string $type
      * @param null $id
      * @return string
      */
@@ -46,7 +46,7 @@ class GameModel
     }
 
     /**
-     * @param $type
+     * @param string $type
      * @param $updatevalue
      * @return bool
      */
@@ -209,7 +209,7 @@ class GameModel
 
     /**
      * @param $id
-     * @return bool
+     * @return boolean|null
      */
     public static function markFinished($id) {
         $db = DatabaseFactory::getFactory()->fluent();
