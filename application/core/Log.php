@@ -58,10 +58,10 @@ class Log {
      * @param null $param
      * @return bool
      */
-    public static function log($typeOf, $type, $title, $text, $user_id = null, $param = null) {
+    public static function put($typeOf, $type, $title, $text, $user_id = null, $param = null) {
         $db = DatabaseFactory::getFactory()->fluent();
 
-        $values = array(
+        $values = [
             'ENTRY_ID' => time(),
             'typeOf' => $typeOf,
             'type' => $type,
@@ -69,13 +69,15 @@ class Log {
             'text' => $text,
             'user_id' => $user_id,
             'param' => json_encode($param)
-        );
+        ];
 
         $query = $db->insertInto('log')->values($values);
         if($query->execute() === true) {
             return true;
         } else {
             Session::error('The Log system failed to log a log message.'.time().' | '.$title);
+            return false;
         }
+
     }
 }
