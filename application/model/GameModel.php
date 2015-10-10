@@ -8,23 +8,23 @@ class GameModel
     /**
      * @var string
      */
-    private static $api_version = "1.0";
+    private static $api_version = '1.0';
     /**
      * @var string
      */
-    private static $base_link = "http:://jotihunt.net/api/";
+    private static $base_link = 'http://jotihunt.net/api/';
     /**
      * @var array
      */
-    private static $allowed_types = array("hint" => "hint", "quest" => "opdracht", "news" => "nieuws");
+    private static $allowed_types = array('hint' => 'hint', 'opdracht' => 'opdracht', 'nieuws' => 'nieuws');
 
     /**
      * @param string $type
      * @param null $id
      * @return string
      */
-    private static function buildLink($type, $id = null) {
-        $url = self::$base_link . self::$api_version . self::$allowed_types[$type];
+    public static function buildLink($type, $id = null) {
+        $url = self::$base_link . self::$api_version . '/' . self::$allowed_types[$type];
         return $url;
     }
     /**
@@ -33,14 +33,14 @@ class GameModel
      */
     public static function setInterVal($input = 60)
     {
-        $set = array('UpdateInterval' => $input);
+        $set = array('KEY' => 'UpdateInterval', 'VALUE' => $input);
         $db = DatabaseFactory::getFactory()->fluent();
-        $query = $db->update('settings')->set($set)->where('KEY', 'updateInterval');
+        $query = $db->update('settings')->set($set)->where('KEY', 'UpdateInterval');
         if ($query->execute()){
             Log::put('success', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $set);
             return true;
         } else {
-            Log::put('error', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $set);
+            Log::put('error', 'UpdateSetting', 'Setting UpdateInterval failed updateing', 'failed to update!', Session::get('user_id'), $set);
             return false;
         }
     }
@@ -52,9 +52,9 @@ class GameModel
      */
     private static function setLastUpdated($type, $updatevalue) {
         $db = DatabaseFactory::getFactory()->fluent();
-        $query = $db->deleteFrom('update_data', array('id' , $type));
+        $query = $db->deleteFrom('update_data')->where('id', $type);
         if ($query->execute()){
-            Log::put('success', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), null);
+            Log::put('success', 'LastUpdate', 'Lastupdated Table was cleared', 'Values cleared', Session::get('user_id'), null);
             $values = array(
                 'UUID' => null,
                 'id' => $type,
@@ -62,14 +62,14 @@ class GameModel
             );
             $query = $db->insertInto('update_data', $values);
             if ($query->execute()){
-                Log::put('success', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                Log::put('success', 'LastUpdate', 'Update Table was Updated', '--', Session::get('user_id'), $values);
                 return true;
             } else {
-                Log::put('error', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                Log::put('error', 'LastUpdate', 'Update table failed to update!', '--', Session::get('user_id'), $values);
                 return false;
             }
         } else {
-            Log::put('error', 'UpdateSetting', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), null);
+            Log::put('error', 'LastUpdate', 'Failed to clear update table', 'Failed to clear update table!', Session::get('user_id'), null);
             return false;
         }
     }
@@ -77,11 +77,10 @@ class GameModel
      * @param $type
      * @return bool
      */
-    public static function updateDatabase($type, $id){
+    public static function updateDatabase($type, $id = null){
         $db = DatabaseFactory::getFactory()->fluent();
-        if (!$type) {
             if ($type = 'opdracht') {
-                $data = json_decode(self::buildLink($type), true);
+                $data = json_decode(file_get_contents(self::buildLink($type)), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
@@ -94,24 +93,24 @@ class GameModel
 
                     $database = DatabaseFactory::getFactory()->getConnection();
 
-                    $sql = "SELECT UUID FROM opdrachten WHERE UUID = :uuid ";
+                    $sql = "SELECT * FROM opdrachten WHERE UUID = :uuid ";
                     $query = $database->prepare($sql);
-                    $query->execute(array(':uuid' => $values['id']));
+                    $query->execute(array(':uuid' => $value['ID']));
 
 
-                    if ($query->rowCount() > 0) {
-                        $query = $db->update('opdrachten')->set($values)->where('UUID', $values['ID']);
+                    if ($query->rowCount() == 1) {
+                        $query = $db->update('opdrachten')->set($values)->where('UUID', $value['ID']);
                         if ($query->execute()) {
-                            Log::put('success', 'updateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'updateRowOpdracht', 'Opdracht Update', 'Opdracht geupdate!', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'UpdateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'UpdateRowOpdracht', 'Opdracht Update', 'Poging tot Updaten van een nieuwe opdracht is mislukt!', Session::get('user_id'), $values);
                         }
                     } elseif ($query->rowCount() == 0) {
                         $query = $db->insertInto('opdrachten', $values);
                         if ($query->execute()) {
-                            Log::put('success', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'insertRowOpdracht', 'Opdracht Toegevoegd', 'Een Nieuwe opdracht beschikbaar!', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'insertRowOpdracht', 'Opdracht Toegevoegd', 'Poging tot toevoegen van een nieuwe opdracht is mislukt!', Session::get('user_id'), $values);
                         }
                     }
                     unset($query);
@@ -126,7 +125,7 @@ class GameModel
 
 
                 //
-                $data = json_decode(self::buildLink($type), true);
+                $data = json_decode(file_get_contents(self::buildLink($type)), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
@@ -139,24 +138,24 @@ class GameModel
 
                     $database = DatabaseFactory::getFactory()->getConnection();
 
-                    $sql = "SELECT UUID FROM opdrachten WHERE UUID = :uuid ";
+                    $sql = "SELECT * FROM hints WHERE UUID = :uuid ";
                     $query = $database->prepare($sql);
-                    $query->execute(array(':uuid' => $values['id']));
+                    $query->execute(array(':uuid' => $value['ID']));
 
 
                     if ($query->rowCount() > 0) {
-                        $query = $db->update('opdrachten')->set($values)->where('UUID', $values['ID']);
+                        $query = $db->update('opdrachten')->set($values)->where('UUID', $value['ID']);
                         if ($query->execute()) {
-                            Log::put('success', 'updateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'updateRowHint', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'UpdateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'UpdateRowHint', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         }
                     } elseif ($query->rowCount() == 0) {
                         $query = $db->insertInto('opdrachten', $values);
                         if ($query->execute()) {
-                            Log::put('success', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'insertRowHint', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'insertRowHint', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         }
                     }
                     unset($query);
@@ -166,7 +165,7 @@ class GameModel
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
             } elseif ($type = 'nieuws') {
-                $data = json_decode(self::buildLink($type), true);
+                $data = json_decode(file_get_contents(self::buildLink($type)), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
                         'UUID' => $value['ID'],
@@ -176,24 +175,24 @@ class GameModel
 
                     $database = DatabaseFactory::getFactory()->getConnection();
 
-                    $sql = "SELECT UUID FROM opdrachten WHERE UUID = :uuid ";
+                    $sql = "SELECT * FROM nieuws WHERE UUID = :uuid ";
                     $query = $database->prepare($sql);
-                    $query->execute(array(':uuid' => $values['id']));
+                    $query->execute(array(':uuid' => $value['ID']));
 
 
-                    if ($query->rowCount() > 0) {
-                        $query = $db->update('opdrachten')->set($values)->where('UUID', $values['ID']);
+                    if ($query->rowCount() == 1) {
+                        $query = $db->update('nieuws')->set($values)->where('UUID', $value['ID']);
                         if ($query->execute()) {
-                            Log::put('success', 'updateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'updateRowNieuws', 'Nieuws Geupdate', 'Nieuw nieuws', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'UpdateRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'UpdateRowNieuws', 'Nieuws gecheckt voor update', 'geen nieuws.', Session::get('user_id'), $values);
                         }
                     } elseif ($query->rowCount() == 0) {
-                        $query = $db->insertInto('opdrachten', $values);
+                        $query = $db->insertInto('nieuws', $values);
                         if ($query->execute()) {
-                            Log::put('success', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('success', 'insertRowNieuws', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         } else {
-                            Log::put('error', 'insertRow', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
+                            Log::put('error', 'insertRowNieuws', 'Setting UpdateInterval was updated', 'Update interval was updated', Session::get('user_id'), $values);
                         }
                     }
                     unset($query);
@@ -202,9 +201,12 @@ class GameModel
                 }
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
+                return true;
+            } else {
+
+                Log::put('error', 'wrongUse', 'You tried to use a function in the wrong way!', 'Gamemodel::updateDatabase($type);', Session::get('user_id'));
+                return false;
             }
-        }
-        return false;
     }
 
     /**
@@ -243,9 +245,11 @@ class GameModel
      * @param null $updated_since
      * @return bool
      */
-    public static function getData($type, $latest = false, $updated_since = null) {
-
-        return false;
+    public static function getData3($type, $latest = false, $updated_since = null) {
+        $db = DatabaseFactory::getFactory()->fluent();
+        $query = $db->from($type)->limit('3')->orderBy('id DESC');
+        $result = $query->execute();
+        return json_decode(json_encode($result),true);
     }
 
     /**

@@ -23,4 +23,8 @@ class DashboardController extends Controller
     {
         $this->View->render('dashboard/index');
     }
+
+    public function test() {
+        $this->View->renderWithoutHeaderAndFooter('test');
+    }
 }
