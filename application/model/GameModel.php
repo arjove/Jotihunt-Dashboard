@@ -79,7 +79,7 @@ class GameModel
      */
     public static function updateDatabase($type, $id = null){
         $db = DatabaseFactory::getFactory()->fluent();
-            if ($type = 'opdracht') {
+            if ($type == 'opdracht') {
                 $data = json_decode(file_get_contents(self::buildLink($type)), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
@@ -119,7 +119,8 @@ class GameModel
                 }
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
-            } elseif ($type = 'hint') {
+                unset($type);
+            } elseif ($type == 'hint') {
                 // temp, it doesnt know how to handle with a hitn yet. no api samples have been realeased.
                 Redirect::home();
 
@@ -164,7 +165,8 @@ class GameModel
                 }
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
-            } elseif ($type = 'nieuws') {
+                unset($type);
+            } elseif ($type == 'nieuws') {
                 $data = json_decode(file_get_contents(self::buildLink($type)), true);
                 foreach ($data['data'] as $key => $value) {
                     $values = array(
@@ -201,6 +203,7 @@ class GameModel
                 }
                 self::setLastUpdated($type, $data['last_update']);
                 unset($data);
+                unset($type);
                 return true;
             } else {
 
