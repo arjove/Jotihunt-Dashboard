@@ -27,4 +27,16 @@ class DashboardController extends Controller
     public function test() {
         $this->View->renderWithoutHeaderAndFooter('test');
     }
+
+    public function notify($command) {
+        if($command == "read") {
+            if(UserModel::setNotifyTimestamp()) {
+                Redirect::home();
+            } else {
+                Redirect::error('forbidden');
+            }
+        } else {
+            Redirect::home();
+        }
+    }
 }

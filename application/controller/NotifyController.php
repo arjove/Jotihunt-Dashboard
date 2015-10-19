@@ -23,4 +23,8 @@ class NotifyController extends Controller
     public function history($limit, $rangeFrom, $rangeTo){
         //$this->View->renderJSON(NotifyModel::History($limit, $rangeFrom, $rangeTo));
     }
+
+    public function read() {
+
+    }
 }

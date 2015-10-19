@@ -24,4 +24,11 @@ class Redirect
 	{
 		header("location: " . Config::get('URL') . $path);
 	}
+
+	public static function error($type){
+		if ($type == 'forbidden') {
+			self::to('error404');
+		}
+
+	}
 }

@@ -25,4 +25,12 @@ class ErrorController extends Controller
         header('HTTP/1.0 404 Not Found', true, 404);
         $this->View->render('error/404');
     }
+
+    /**
+     * Controls what happens when a user is forbidden (403)
+     */
+    public function forbidden() {
+        header('HTTP/1.0 403 Forbidden');
+        $this->View->render('error/forbidden');
+    }
 }

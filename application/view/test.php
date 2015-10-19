@@ -8,11 +8,13 @@
 echo "<pre>";
 echo time();
 echo '<br>';
-echo GameModel::buildLink('nieuws');
+echo GameModel::buildLink('opdracht', '560fd08f4f0c70f8157b23c7');
 echo '<br>';
-
-$homepage = file_get_contents(GameModel::buildLink('nieuws'));
-echo $homepage;
+//http://jotihunt.net/api/1.0/nieuws/561bff4b1451985617bf9585
+$homepage = file_get_contents('http://jotihunt.net/api/1.0/scorelijst');
+$latest_opdrachten = GameModel::getLatest('opdracht');
+var_dump(json_decode($homepage, true));
+//var_dump($latest_opdrachten);
 echo "<br>";
 
 if (GameModel::updateDatabase('opdracht')) {
@@ -55,5 +57,3 @@ if (GameModel::updateDatabase('nieuws')) {
 
 
 echo "</pre>";
-
-phpinfo();
