@@ -1,7 +1,17 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: arjo
- * Date: 24/10/2015
- * Time: 17:15
+ * Handles all data manipulation of the admin part
  */
+class BeamerModel
+{
+    public static function getdatashown() {
+
+    }
+
+    public static function Render() {
+
+        // render_multi
+    }
+    // meld_hunt
+    // meld_tegenhunt
+}

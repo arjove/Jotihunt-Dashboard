@@ -51,6 +51,9 @@ class Auth
 
         // if user is not logged in or is not an admin (= not role type 7)
         if (!Session::userIsLoggedIn() || Session::get("user_account_type") != 7) {
+            if (Session::get("user_account_type") !=7) {
+                Redirect::error('forbidden');
+            }
             // ... then treat user as "not logged in", destroy session, redirect to login page
             Session::destroy();
             header('location: ' . Config::get('URL') . 'login');

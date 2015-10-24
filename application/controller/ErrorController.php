@@ -33,4 +33,9 @@ class ErrorController extends Controller
         header('HTTP/1.0 403 Forbidden');
         $this->View->render('error/forbidden');
     }
+
+    public function error500() {
+        header('HTTP/1.0 500 ');
+        $this->View->render('error/forbidden');
+    }
 }

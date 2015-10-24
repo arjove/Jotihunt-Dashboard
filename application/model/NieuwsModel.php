@@ -1,7 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: arjo
- * Date: 24/10/2015
- * Time: 16:45
+ * Handles all data manipulation of the admin part
  */
+class NieuwsModel
+{
+    // meld_hunt
+    // meld_tegenhunt
+}

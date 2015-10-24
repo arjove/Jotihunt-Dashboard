@@ -25,6 +25,7 @@ class DashboardController extends Controller
     }
 
     public function test() {
+        Auth::checkAdminAuthentication();
         $this->View->renderWithoutHeaderAndFooter('test');
     }
 
