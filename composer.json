@@ -14,5 +14,8 @@
     },
     "autoload": {
         "psr-4": { "": ["application/core/", "application/model/"] }
+    },
+    "require": {
+        "pusher/pusher-php-server": "^2.2"
     }
 }

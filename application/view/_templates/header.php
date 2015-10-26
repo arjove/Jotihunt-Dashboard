@@ -4,6 +4,7 @@
     <?php
     // storeage of a var to be used throughout the file.
     $notify = Log::getLog(200, true);
+    $this->note = "5";
 
     ?>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
@@ -14,6 +15,9 @@
     <link rel="apple-touch-icon" sizes="76x76" href="<?php echo Config::get('URL'); ?>ico/76.png">
     <link rel="apple-touch-icon" sizes="120x120" href="<?php echo Config::get('URL'); ?>ico/120.png">
     <link rel="apple-touch-icon" sizes="152x152" href="<?php echo Config::get('URL'); ?>ico/152.png">
+    <?php if ($this->refresh) {?>
+        <meta http-equiv="refresh" content="<?php echo $this->num;?> ">
+    <?php } ?>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">

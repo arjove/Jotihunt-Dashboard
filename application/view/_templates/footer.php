@@ -379,6 +379,9 @@ if(Config::get('QUICKVIEW')) { ?>
 <script src="<?php echo Config::get('URL'); ?>js/pages.calendar.min.js"></script>
 <script src="<?php echo Config::get('URL'); ?>js/calendar.js" type="text/javascript"></script>
 <script src="<?php echo Config::get('URL'); ?>js/portlets.js" type="text/javascript"></script>
+<script src="<?php echo Config::get('URL'); ?>assets/js/dashboard.js" type="text/javascript"></script>
+<script src="<?php echo Config::get('URL'); ?>assets/js/scripts.js" type="text/javascript"></script>
+<!-- END PAGE LEVEL JS -->
 
 <!-- END PAGE LEVEL JS -->
 </body>

@@ -21,7 +21,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $this->View->render('dashboard/index');
+        $this->View->render('dashboard/index', array('refresh' => true, 'num' => '0.000001'));
     }
 
     public function test() {

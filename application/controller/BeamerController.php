@@ -11,14 +11,23 @@ class BeamerController extends Controller
         parent::__construct();
     }
 
-    public function index()
-    {
-        $render = BeamerModel::Render();
-        $this->View->renderWithoutHeaderAndFooter('_templates\header');
+    public function show($set){
+        $render = BeamerModel::Render($set);
+        $this->View->renderWithoutHeaderAndFooter('_templates/header', array('refresh' => false, 'num' => '5'));
+        $this->View->renderWithoutHeaderAndFooter('beamer/pre');
+
         foreach ($render as $key => $value) {
             $this->View->renderWithoutHeaderAndFooter($value);
         }
-        $this->View->renderWithoutHeaderAndFooter('_templates\footer');
+
+        //$this->View->renderWithoutHeaderAndFooter('beamer/after');
+        $this->View->renderWithoutHeaderAndFooter('_templates/footer');
+
+    }
+
+    public function index($set)
+    {
+        Redirect::to('beamer/show/globaal');
     }
 
     public function config() {
