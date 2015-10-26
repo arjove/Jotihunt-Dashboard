@@ -8,8 +8,14 @@ class BeamerModel
 
     }
 
+    /**
+     * @param $set
+     * @return array
+     */
     public static function Render($set) {
-        return array('beamer/globaal');
+        $return = array('beamer/globaal');
+
+        return $return;
         // render_multi
     }
     // meld_hunt
